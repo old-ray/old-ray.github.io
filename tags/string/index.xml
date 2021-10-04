@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>String on 老雷的博客</title>
+    <link>/tags/string/</link>
+    <description>Recent content in String on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Tue, 01 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/string/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>搞了一天的String和internal，终于想通了</title>
+      <link>/posts/%E6%90%9E%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84string%E5%92%8Cinternal%E7%BB%88%E4%BA%8E%E6%83%B3%E9%80%9A%E4%BA%86/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/%E6%90%9E%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84string%E5%92%8Cinternal%E7%BB%88%E4%BA%8E%E6%83%B3%E9%80%9A%E4%BA%86/</guid>
+      <description>前言：铁汁们，今天又是代码被虐爆肝的一天，被啥虐了嘞，看标题就知道了，话不多说上代码。 1public class StringInternTest { 2 3 public static void main(String[] args) { 4 5 String s1 = &amp;#34;1&amp;#34;; 6 String s= new String(&amp;#34;1&amp;#34;); 7 s.intern(); 8 System.out.println(s</description>
+    </item>
+    
+  </channel>
+</rss>

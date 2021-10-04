@@ -1,24 +1,29 @@
 <!doctype html><html lang="zh-cn"
    data-mode="dark">
   <head>
-	<meta name="generator" content="Hugo 0.88.1" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>并发收集，三色标记算法 - 老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="/images/favicons/manifest.json">
 <link rel="icon" href="/images/favicons/favicon.ico">
-<meta name="keywords" content="老雷的博客" />
-<meta name="description" content="老雷的博客空间" /><meta itemprop="name" content="老雷的博客">
-<meta itemprop="description" content="老雷的博客空间"><meta property="og:title" content="老雷的博客" />
-<meta property="og:description" content="老雷的博客空间" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/" /><meta property="og:site_name" content="老雷的博客" />
+<meta name="keywords" content="" />
+<meta name="description" content="并发收集，三色标记算法" /><meta itemprop="name" content="并发收集，三色标记算法">
+<meta itemprop="description" content="并发收集，三色标记算法"><meta itemprop="datePublished" content="2021-06-15T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-15T00:00:00+00:00" />
+<meta itemprop="wordCount" content="981">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="并发收集，三色标记算法" />
+<meta property="og:description" content="并发收集，三色标记算法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-15T00:00:00+00:00" /><meta property="og:site_name" content="老雷的博客" />
+<meta property="og:see_also" content="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" /><meta property="og:see_also" content="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/" /><meta property="og:see_also" content="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/" /><meta property="og:see_also" content="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/" /><meta property="og:see_also" content="/posts/jstack%E5%AD%A6%E4%B9%A0%E6%89%BE%E5%87%BAcpu%E9%A3%99%E5%8D%87%E4%BB%A3%E7%A0%81/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="老雷的博客"/>
-<meta name="twitter:description" content="老雷的博客空间"/>
+<meta name="twitter:title" content="并发收集，三色标记算法"/>
+<meta name="twitter:description" content="并发收集，三色标记算法"/>
 <link rel="preload" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.7f897e939511eca8faed3d8cda00a2fc058e9d78bcca08318091da29944fae3e.js" integrity="sha256-f4l&#43;k5UR7Kj67T2M2gCi/AWOnXi8yggxgJHaKZRPrj4=" crossorigin="anonymous"></script></head>
   <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
@@ -52,11 +57,11 @@
   </form>
   <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=%e8%80%81%e9%9b%b7%e7%9a%84%e5%8d%9a%e5%ae%a2&url=%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e5%b9%b6%e5%8f%91%e6%94%b6%e9%9b%86%ef%bc%8c%e4%b8%89%e8%89%b2%e6%a0%87%e8%ae%b0%e7%ae%97%e6%b3%95&url=%2fposts%2f%25E5%25B9%25B6%25E5%258F%2591%25E6%2594%25B6%25E9%259B%2586%25E4%25B8%2589%25E8%2589%25B2%25E6%25A0%2587%25E8%25AE%25B0%25E7%25AE%2597%25E6%25B3%2595%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2f%25E5%25B9%25B6%25E5%258F%2591%25E6%2594%25B6%25E9%259B%2586%25E4%25B8%2589%25E8%2589%25B2%25E6%25A0%2587%25E8%25AE%25B0%25E7%25AE%2597%25E6%25B3%2595%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -64,7 +69,7 @@
 
 </div>
 </div>
-<a class="navbar-brand me-3 active" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
+<a class="navbar-brand me-3" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
    width="300" height="300"
    />
 老雷的博客空间
@@ -105,162 +110,81 @@
 <main role="main" class="container">
       <div class="row content">
 <div class="col-lg-8">
-  <div class="container"><div class="posts mb-4"><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-21
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy">虚拟机</a><a href="/series/vmware/" class="post-taxonomy">vmware</a></div>
-<div class="post-summary">
-          
-          前言：虚拟机相信各位小伙伴一定不陌生，我们平时在做项目框架搭建和测试时为了模拟多机器环境经常会用到，但对于初学者不太友好的就是，如果虚拟机或
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-20
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/spring/" class="post-taxonomy">spring</a></div>
-<div class="post-summary">
-          
-          前言：对于java开发人员来说，spring是必会的一门框架了，于初学者而言，能熟练使用spring就已经很ok了，但对于一匹老码来说，就须
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-19
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
-  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：通过上节我们知道Mysql将事务设置为可重复读隔离级别后可以避免数据脏读和不可重复读问题。那么可重复读具体是怎样实现的呢？MVCC是个
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-18
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：从最开始的手工写begin,commit语句，到现在的@Transtional注解，事务看似不起眼也很容易使用，只有在真正接触后发现，
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-17
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
-  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：最近阿雷在学习关于mysql查询优化中到get一个重要的知识点：索引。虽然以前知道索引，但对索引的了解也仅仅是停留在创建索引层面。所以
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-16
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>8 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：本节主要复习下之前所讲过的一些知识点，整理出一些面试题，供各位大佬享用。 Java类加载过程 类加载器加载class可以大致分为： 加载 &raquo; 验
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/">并发收集，三色标记算法
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active">并发收集，三色标记算法</li></ol>
+  </div>
+</nav><article class="post row card mb-4 component">
+  <div class="card-body"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-arrows-alt"></i>
+</a>
+  
+    
+
+    
+    
+    
+  </div>
+</div>
+<h1 class="card-title my-3">并发收集，三色标记算法
+</h1><div class="post-meta"><span class="post-date" title="created on">
     <i class="fas fa-fw fa-calendar-alt"></i>2021-06-15
   </span><span class="post-reading-time" title="reading time">
     <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
   </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：之前我们讲过CMS收集器的回收过程，有一步骤是并发标记，他会在不停止应用线程的情况下判断是否为垃圾对象。感觉就像是你在家里打扫卫生时，
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-14
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：Garbage-First收集器主要应用在配备大内存，多核处理器的机器上面。他以高概率满足垃圾收集暂停时间目标，同时在几乎不需要配置的
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-13
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：话接上篇讲了垃圾收集器的几大算法，本篇主要讲对应算法的一些实现。话不多说，先看一张图。 图中主要介绍了目前主流的几款垃圾收集器（图中连线
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-12
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：万事开头难，先从基础概念讲起吧，老规矩，还是以JDK8版本主讲。 一，垃圾收集算法 复制算法：将内存分为大小相同的两块（运行区域，预留区域
-        </div>
-      </div>
-    </article></div><div class="row table-responsive mb-3">
-    <ul class="pagination pagination-default">
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item active">
-        <a href="#" aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/page/3/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-    </ul></div>
-</div>
+<div class="post-content mb-3"><blockquote>
+<p>前言：之前我们讲过CMS收集器的回收过程，有一步骤是并发标记，他会在不停止应用线程的情况下判断是否为垃圾对象。感觉就像是你在家里打扫卫生时，你儿子又在一旁丢垃圾一样。这些新出现的垃圾如何处理？再有你认为是垃圾的东西，你儿子却又拿过去玩怎么办？相反你认为有用的东西，实际上又变成垃圾了咋整？</p>
+</blockquote>
+<p>一，三色标记概念
+这里三色可以理解为gc过程中对象的扫描状态。采用可达性分析算法，从Gc Roots逐级往下查找。
+黑色：表示当前对象已经被垃圾收集器访问过，并且对象里面的所有引用都扫描过。表示对象是存活的
+灰色：表示当前对象已经访问过，但对象里面的引用还没有扫描或只扫描了部份。
+白色：表示当前对象暂未被扫描过。默认所有对象为白色的，如果扫描分析结束对象仍然是白色，则证明不可达，从而可能被当成垃圾回收掉。</p>
+<p>二，多标和漏标的问题
+1，多标
+即你认为有用的东西，实际上变成没用的。想象下在并发标记过程中，gc可能先扫描到了对象并把对象标记为非垃圾对象，但后来应用线程把对象的引用都删除掉了，此时对象应该变成白色成为垃圾对象，但是gc不知道。这种情况就是多标，多标会产生浮动垃圾，而本次gc并不会回收这部份垃圾，而会留到下次gc过来回收。</p>
+<p>2，新增对象
+即在标记过程中，又有新对象挪到了老年代中，这种情况下产生的对象都会标记为黑色，本次gc不回收（就算变成了垃圾对象也不会回收）。</p>
+<p>3，漏标
+最坑的应该是这种了：你认为是垃圾的东西，你儿子却又拿过去玩怎么办。在标记过程中，出现了已经为黑色的对象引用了一个白色的对象。因为黑色对象gc不会再扫描了，而白色对象gc又扫描不到，但实际白色对象是存在引用的。这种情况下白色对象是不能够被回收的，否则就会出现严重bug。</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210623002515373.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
 
+</p>
+<blockquote>
+<p>垃圾收集器会有一个类似于“操作日志”的东西，当我们添加引用或者删除引用的时候，会把这添加和删除的引用记录下来。等并发扫描完成后，重新扫描一次（重新标记）。而这种操作日志有个专有名词叫作写屏障（有点类似切面的概念）</p>
+</blockquote>
+<p>增量更新：当应用程序执行中添加对象引用后，会记录这个新增的引用（CMS用的这种处理漏标问题）</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210623003745546.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>原始快照（SATB）：当应用程序删除对象引用前，会记录这个删除的引用（自行脑补）</p>
+<blockquote>
+<p>总结：关于垃圾收集器内容到此就告一段落了。我分了四个章节讲，足以看出他的复杂程度。接下来就是要看一些面试题巩固一下啦，期待下期吧。我是阿雷，一名深漂程序员~</p>
+</blockquote>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a>
+  </div><div class="post-nav post-next">
+    <a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
+</a></li><li><a href="/posts/jstack%E5%AD%A6%E4%B9%A0%E6%89%BE%E5%87%BAcpu%E9%A3%99%E5%8D%87%E4%BB%A3%E7%A0%81/">Jstack学习：找出cpu飙升代码
+</a></li><li><a href="/posts/%E9%87%8D%E8%AF%86hashmap%E4%B8%89/">重识HashMap（三）
+</a></li></ul>
+  </section></div>
+</article></div>
 </div><aside class="col-lg-4 sidebar d-flex">
   <div class="container">
     

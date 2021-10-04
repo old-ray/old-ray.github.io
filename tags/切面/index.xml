@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>切面 on 老雷的博客</title>
+    <link>/tags/%E5%88%87%E9%9D%A2/</link>
+    <description>Recent content in 切面 on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 16 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/%E5%88%87%E9%9D%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>springboot 使用切面记录请求参数与返回结果</title>
+      <link>/posts/springboot-%E4%BD%BF%E7%94%A8%E5%88%87%E9%9D%A2%E8%AE%B0%E5%BD%95%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%8E%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C/</link>
+      <pubDate>Fri, 16 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/springboot-%E4%BD%BF%E7%94%A8%E5%88%87%E9%9D%A2%E8%AE%B0%E5%BD%95%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%8E%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C/</guid>
+      <description>使用切面记录请求参数与返回结果 因为在上月底有一次大的版本上线，而因为前期测试不足导致上线后系统不太稳定，所以才打算把这块补上。。。 1@Aspect 2@Component 3@Order(1) //</description>
+    </item>
+    
+  </channel>
+</rss>

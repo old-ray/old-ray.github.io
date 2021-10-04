@@ -1,24 +1,29 @@
 <!doctype html><html lang="zh-cn"
    data-mode="dark">
   <head>
-	<meta name="generator" content="Hugo 0.88.1" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>由mysql索引想到的几种“树”据结构 - 老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="/images/favicons/manifest.json">
 <link rel="icon" href="/images/favicons/favicon.ico">
-<meta name="keywords" content="老雷的博客" />
-<meta name="description" content="老雷的博客空间" /><meta itemprop="name" content="老雷的博客">
-<meta itemprop="description" content="老雷的博客空间"><meta property="og:title" content="老雷的博客" />
-<meta property="og:description" content="老雷的博客空间" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/" /><meta property="og:site_name" content="老雷的博客" />
+<meta name="keywords" content="" />
+<meta name="description" content="由mysql索引想到的几种“树”据结构" /><meta itemprop="name" content="由mysql索引想到的几种“树”据结构">
+<meta itemprop="description" content="由mysql索引想到的几种“树”据结构"><meta itemprop="datePublished" content="2021-06-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1157">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="由mysql索引想到的几种“树”据结构" />
+<meta property="og:description" content="由mysql索引想到的几种“树”据结构" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-17T00:00:00+00:00" /><meta property="og:site_name" content="老雷的博客" />
+<meta property="og:see_also" content="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/" /><meta property="og:see_also" content="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="老雷的博客"/>
-<meta name="twitter:description" content="老雷的博客空间"/>
+<meta name="twitter:title" content="由mysql索引想到的几种“树”据结构"/>
+<meta name="twitter:description" content="由mysql索引想到的几种“树”据结构"/>
 <link rel="preload" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.7f897e939511eca8faed3d8cda00a2fc058e9d78bcca08318091da29944fae3e.js" integrity="sha256-f4l&#43;k5UR7Kj67T2M2gCi/AWOnXi8yggxgJHaKZRPrj4=" crossorigin="anonymous"></script></head>
   <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
@@ -52,11 +57,11 @@
   </form>
   <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=%e8%80%81%e9%9b%b7%e7%9a%84%e5%8d%9a%e5%ae%a2&url=%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e7%94%b1mysql%e7%b4%a2%e5%bc%95%e6%83%b3%e5%88%b0%e7%9a%84%e5%87%a0%e7%a7%8d%e2%80%9c%e6%a0%91%e2%80%9d%e6%8d%ae%e7%bb%93%e6%9e%84&url=%2fposts%2f%25E7%2594%25B1mysql%25E7%25B4%25A2%25E5%25BC%2595%25E6%2583%25B3%25E5%2588%25B0%25E7%259A%2584%25E5%2587%25A0%25E7%25A7%258D%25E6%25A0%2591%25E6%258D%25AE%25E7%25BB%2593%25E6%259E%2584%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2f%25E7%2594%25B1mysql%25E7%25B4%25A2%25E5%25BC%2595%25E6%2583%25B3%25E5%2588%25B0%25E7%259A%2584%25E5%2587%25A0%25E7%25A7%258D%25E6%25A0%2591%25E6%258D%25AE%25E7%25BB%2593%25E6%259E%2584%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -64,7 +69,7 @@
 
 </div>
 </div>
-<a class="navbar-brand me-3 active" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
+<a class="navbar-brand me-3" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
    width="300" height="300"
    />
 老雷的博客空间
@@ -105,162 +110,122 @@
 <main role="main" class="container">
       <div class="row content">
 <div class="col-lg-8">
-  <div class="container"><div class="posts mb-4"><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-21
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy">虚拟机</a><a href="/series/vmware/" class="post-taxonomy">vmware</a></div>
-<div class="post-summary">
-          
-          前言：虚拟机相信各位小伙伴一定不陌生，我们平时在做项目框架搭建和测试时为了模拟多机器环境经常会用到，但对于初学者不太友好的就是，如果虚拟机或
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-20
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/spring/" class="post-taxonomy">spring</a></div>
-<div class="post-summary">
-          
-          前言：对于java开发人员来说，spring是必会的一门框架了，于初学者而言，能熟练使用spring就已经很ok了，但对于一匹老码来说，就须
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-19
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
-  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：通过上节我们知道Mysql将事务设置为可重复读隔离级别后可以避免数据脏读和不可重复读问题。那么可重复读具体是怎样实现的呢？MVCC是个
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-18
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：从最开始的手工写begin,commit语句，到现在的@Transtional注解，事务看似不起眼也很容易使用，只有在真正接触后发现，
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active">由mysql索引想到的几种“树”据结构</li></ol>
+  </div>
+</nav><article class="post row card mb-4 component">
+  <div class="card-body"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-arrows-alt"></i>
+</a>
+  
+    
+
+    
+    
+    
+  </div>
+</div>
+<h1 class="card-title my-3">由mysql索引想到的几种“树”据结构
+</h1><div class="post-meta"><span class="post-date" title="created on">
     <i class="fas fa-fw fa-calendar-alt"></i>2021-06-17
   </span><span class="post-reading-time" title="reading time">
     <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
   </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
-<div class="post-summary">
-          
-          前言：最近阿雷在学习关于mysql查询优化中到get一个重要的知识点：索引。虽然以前知道索引，但对索引的了解也仅仅是停留在创建索引层面。所以
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-16
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>8 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：本节主要复习下之前所讲过的一些知识点，整理出一些面试题，供各位大佬享用。 Java类加载过程 类加载器加载class可以大致分为： 加载 &raquo; 验
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/">并发收集，三色标记算法
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-15
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：之前我们讲过CMS收集器的回收过程，有一步骤是并发标记，他会在不停止应用线程的情况下判断是否为垃圾对象。感觉就像是你在家里打扫卫生时，
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-14
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：Garbage-First收集器主要应用在配备大内存，多核处理器的机器上面。他以高概率满足垃圾收集暂停时间目标，同时在几乎不需要配置的
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-13
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：话接上篇讲了垃圾收集器的几大算法，本篇主要讲对应算法的一些实现。话不多说，先看一张图。 图中主要介绍了目前主流的几款垃圾收集器（图中连线
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-12
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a></div>
-<div class="post-summary">
-          
-          前言：万事开头难，先从基础概念讲起吧，老规矩，还是以JDK8版本主讲。 一，垃圾收集算法 复制算法：将内存分为大小相同的两块（运行区域，预留区域
-        </div>
-      </div>
-    </article></div><div class="row table-responsive mb-3">
-    <ul class="pagination pagination-default">
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item active">
-        <a href="#" aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/page/3/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-    </ul></div>
-</div>
+<div class="post-content mb-3"><blockquote>
+<p>前言：最近阿雷在学习关于mysql查询优化中到get一个重要的知识点：索引。虽然以前知道索引，但对索引的了解也仅仅是停留在创建索引层面。所以这几天稍微更深层了解了下，以作后记（这里只讨论mysql）。</p>
+</blockquote>
+<p>1，什么是索引</p>
+<ul>
+<li>官方定义：
+在关系数据库中，索引是一种单独的、物理的对数据库表中一列或多列的值进行排序的一种存储结构，它是某个表中一列或若干列值的集合和相应的指向表中物理标识这些值的数据页的逻辑指针清单。索引的作用相当于图书的目录，可以根据目录中的页码快速找到所需的内容。</li>
+</ul>
+<ul>
+<li>上面说了一大堆，据阿雷了解，在mysql中索引是一种有序的（排好序）的数据结构，能够速度查询出来想要的数据（像新华字典的目录按A-Z排序定位）。</li>
+</ul>
+<p>2，创建索引</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="ln">1</span><span class="n">ALTER</span> <span class="n">TABLE</span> <span class="err">`</span><span class="n">table_name</span><span class="err">`</span>
+<span class="ln">2</span><span class="n">ADD</span> <span class="n">INDEX</span> <span class="err">`</span><span class="n">INDEX_NAME</span><span class="err">`</span> <span class="o">(</span><span class="err">`</span><span class="n">column_name</span><span class="err">`</span> <span class="n">ASC</span><span class="o">);</span>
+</code></pre></div><p>3，索引的数据结构</p>
+<ul>
+<li>
+<p>mysql底层对索引一般使用B+tree结构进行实现。但我还是对比较常见的几种做了下总结：</p>
+</li>
+<li>
+<p>二叉树（Binary tree）：二叉树是每个节点最多有两个子树的树结构，左侧子树节点称为“左子树”（left subtree），右侧子树节点称为“右子树”（right subtree）。每个节点最多有2个子节点的树（即每个节点的度小于3）。
+但是这种对于自增的索引（如主键索引）不友好。如下图（图中如果查找数据3，则会从1节点开始向下查找，想象下如果是查找数据100，同样也是从1开始，这样可以说没有起到快速查询的效果）：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210701005235723.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
 
+</p>
+</li>
+<li>
+<p>红黑树（自平衡二叉查找树）：在插入或删除时有做旋转处理，提高查询效率（像刚才二叉树的情况，在红黑树中做了优化处理，元素2变成了root结点，而比2小的1放在左叶，比2大的3在右叶）。</p>
+</li>
+</ul>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210701010418726.png" loading="lazy"
+  
+   />
+
+</p>
+<ul>
+<li>
+<p>Hash表：通过计算hashcode方式可以高效快速定位到对应的记录。但是对于存在排序或范围查找几乎就完全无用了（比如查找年龄大于18的，hash的方式无法查找）。</p>
+</li>
+<li>
+<p>B-Tree：B-Tree的节点中可以冗余保存2个以上的节点。这样做的目的是缩短整个树的高度，节点与叶子节点仍然保持左叶小，右叶大的原则，如下图。</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210701011548944.png" loading="lazy"
+  
+   />
+
+</p>
+</li>
+<li>
+<p>B+Tree：相较于B树，B+树在此基础上进行了优化，主节点，是从最底层的叶子结点提炼出来的。B-tree中非叶子节点可以存值；但是B+tree非叶子节点不可以存值，只能存key，所以值只存在叶子节点中，而且最底层的叶子节点之间有指针指向关联。
+<img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/2021070101194886.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>// 这里给大家分享一个算法执行可视法演示的网址（需梯子），
+<span class="ln">2</span>//有兴趣大家可以自己输入一些数字看一下效果（上面的结果也来从这个网站测试得到的）：
+<span class="ln">3</span>https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
+</code></pre></div><p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/2021070101025084.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<blockquote>
+<p>总结：通过本节总算是对索引有了一个新的认识，不会再听到大佬们说B+Tree的时候一脸懵了。我们平时应该在构思表结构的时候就把索引考虑进去，不然等到数据量大的时候建索可能需发生一些奇奇怪怪的问题。。。我是阿雷，一枚最近被ubuntu和deepin折磨得go die的程序员。</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210701013632331.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
+</a>
+  </div><div class="post-nav post-next">
+    <a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
+</a></li><li><a href="/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/">并发收集，三色标记算法
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
+</a></li></ul>
+  </section></div>
+</article></div>
 </div><aside class="col-lg-4 sidebar d-flex">
   <div class="container">
     
