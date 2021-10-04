@@ -53,5 +53,32 @@
       <description></description>
     </item>
     
+    <item>
+      <title>log4j</title>
+      <link>/zh-cn/tags/log4j/</link>
+      <pubDate>Fri, 23 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/tags/log4j/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>切面</title>
+      <link>/zh-cn/tags/%E5%88%87%E9%9D%A2/</link>
+      <pubDate>Fri, 16 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/tags/%E5%88%87%E9%9D%A2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>/zh-cn/tags/redis/</link>
+      <pubDate>Tue, 30 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/tags/redis/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

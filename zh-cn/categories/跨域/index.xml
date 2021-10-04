@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>跨域 on 老雷的博客</title>
+    <link>/zh-cn/categories/%E8%B7%A8%E5%9F%9F/</link>
+    <description>Recent content in 跨域 on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/zh-cn/categories/%E8%B7%A8%E5%9F%9F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>同一域名出现部份地址跨域问题</title>
+      <link>/zh-cn/posts/%E5%90%8C%E4%B8%80%E5%9F%9F%E5%90%8D%E5%87%BA%E7%8E%B0%E9%83%A8%E4%BB%BD%E5%9C%B0%E5%9D%80%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/posts/%E5%90%8C%E4%B8%80%E5%9F%9F%E5%90%8D%E5%87%BA%E7%8E%B0%E9%83%A8%E4%BB%BD%E5%9C%B0%E5%9D%80%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/</guid>
+      <description>@TOC 今天跟前端同事联调接口时发现一个非常奇葩的事情，我写的有些接口可以访问，有一些却提示跨域？？？，但是我自己用postman调试又没问题，为</description>
+    </item>
+    
+  </channel>
+</rss>
