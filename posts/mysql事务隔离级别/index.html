@@ -1,0 +1,330 @@
+<!doctype html><html lang="zh-cn"
+   data-mode="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mysql事务隔离级别 - 老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/images/favicons/manifest.json">
+<link rel="icon" href="/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="Mysql事务隔离级别" /><meta itemprop="name" content="Mysql事务隔离级别">
+<meta itemprop="description" content="Mysql事务隔离级别"><meta itemprop="datePublished" content="2021-06-18T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-18T00:00:00+00:00" />
+<meta itemprop="wordCount" content="946">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Mysql事务隔离级别" />
+<meta property="og:description" content="Mysql事务隔离级别" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-18T00:00:00+00:00" /><meta property="og:site_name" content="老雷的博客" />
+<meta property="og:see_also" content="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/" /><meta property="og:see_also" content="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mysql事务隔离级别"/>
+<meta name="twitter:description" content="Mysql事务隔离级别"/>
+<link rel="preload" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.7f897e939511eca8faed3d8cda00a2fc058e9d78bcca08318091da29944fae3e.js" integrity="sha256-f4l&#43;k5UR7Kj67T2M2gCi/AWOnXi8yggxgJHaKZRPrj4=" crossorigin="anonymous"></script></head>
+  <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-settings me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="offcanvas offcanvas-start surface" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+
+
+
+
+
+<section class="setting social-share">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-share-alt"></i> Share</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a class="btn btn-sm btn-outline-primary btn-social-share"><i class="fas fa-share"></i></a>
+    </div>
+  </form>
+  <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Mysql%e4%ba%8b%e5%8a%a1%e9%9a%94%e7%a6%bb%e7%ba%a7%e5%88%ab&url=%2fposts%2fmysql%25E4%25BA%258B%25E5%258A%25A1%25E9%259A%2594%25E7%25A6%25BB%25E7%25BA%25A7%25E5%2588%25AB%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fmysql%25E4%25BA%258B%25E5%258A%25A1%25E9%259A%2594%25E7%25A6%25BB%25E7%25BA%25A7%25E5%2588%25AB%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</section>
+
+</div>
+</div>
+<a class="navbar-brand me-3" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
+   width="300" height="300"
+   />
+老雷的博客空间
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active">Mysql事务隔离级别</li></ol>
+  </div>
+</nav><article class="post row card mb-4 component">
+  <div class="card-body"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-arrows-alt"></i>
+</a>
+  
+    
+
+    
+    
+    
+  </div>
+</div>
+<h1 class="card-title my-3">Mysql事务隔离级别
+</h1><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-18
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
+  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
+<div class="post-content mb-3"><blockquote>
+<p>前言：从最开始的手工写begin,commit语句，到现在的@Transtional注解，事务看似不起眼也很容易使用，只有在真正接触后发现，确实没什么用。转眼已到七月，夏日炎炎正好眠，所以阿雷打算肝完这节就去睡（来自凌晨一点的问候）。</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210702234004164.png" loading="lazy"
+  
+   />
+
+</p>
+<p>一，事务基本操作,ACID</p>
+<ul>
+<li>原子性(Atomicity)：这点很好理解。在程序运行过程中，同一个事务里的操作要么都成功，要么都失败（经常案例就是银行的转账，一边扣钱，一边加钱，不能只扣不加）。</li>
+<li>一致性(Consistent)：在事务开始之前和事务结束以后，数据库的完整性没有被破坏。这表示写入的资料必须完全符合所有的预设约束、触发器、级联回滚等。（像转账操作一边减，一边加，实际钱还是那么多）</li>
+<li>隔离性(Isolation)：多个操作并发执行时，通过事务隔离保证数据不被其他事务干扰，而导致结果出错。包括读未提交（Read uncommitted）、读已提交（read committed）、可重复读（repeatable read）和串行化（Serializable）</li>
+<li>持久性(Durable)：事务提交后，如果后续不再操作他，则数据会永久不变。（不会因为重启，宕机而导致数据回滚）。</li>
+</ul>
+<p>二，事务隔离级别</p>
+<ul>
+<li>
+<p>多个事务对同一条数据的操作会因为隔离级别的不同而呈现不同的情况，会出现如下问题。</p>
+</li>
+<li>
+<p>脏读：比如事务A修改了一条记录还未提交，但当事务B去读取这条记录时却可以读取到事务A修改后的结果，如果事务B对记录进行了修改操作，最后事务A进行回滚操作，这时数据就会出现脏读情况。</p>
+</li>
+<li>
+<p>不可重复读：一个事务在执行完查询的sql语句后，再次执行这条查询语句，竟然数据发生了修改或删除</p>
+</li>
+<li>
+<p>幻读：一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务插入了满足其查询条件的新数据，这种现象就称为“幻读”</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210703000642184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="ln">1</span><span class="nl">查看当前数据库的事务隔离级别:</span>
+<span class="ln">2</span><span class="n">showvariableslike</span><span class="err">&#39;</span><span class="n">tx_isolation</span><span class="err">&#39;</span><span class="o">;</span>
+<span class="ln">3</span><span class="n">设置事务隔离级别</span><span class="err">：</span>
+<span class="ln">4</span><span class="n">settx_isolation</span><span class="o">=</span><span class="err">&#39;</span><span class="n">REPEATABLE</span><span class="o">-</span><span class="n">READ</span><span class="err">&#39;</span><span class="o">;</span>
+<span class="ln">5</span><span class="n">Mysql默认的事务隔离级别是可重复读</span><span class="err">，</span>
+</code></pre></div><p>数据脏读演示：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210703004530318.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>不可重复读演示：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210703005148277.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>幻读情况演示：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210703010131558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<blockquote>
+<p>总结：今天主要了解了事务的几大隔离级别，以及各级别会出现的几种问题。不过阿雷觉得这些知识在平时开发过程中还是难以应用到的。因为我们一般不会用读未提交和读已提交这两种。但也可能在面试过程中会被问到。所以也了解了一下。今天真开心，又学到了一些没什么用的知识。</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/2021070301091120.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a>
+  </div><div class="post-nav post-next">
+    <a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a></li><li><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
+</a></li><li><a href="/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/">并发收集，三色标记算法
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
+</a></li></ul>
+  </section></div>
+</article></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Old Ray" src="/images/profile.webp" loading="lazy"
+   width="640" height="640"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">Old Ray</div><div class="profile-bio">Java开发攻城狮</div><div class="profile-company"><i class="fas fa-fw fa-building"></i>心和未来</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东·深圳</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://www.leiwang.vip/about/%E5%85%B3%E4%BA%8E%E6%88%91/">关于我</a></div></div>
+  </div>
+</section>
+  <section class="featured-posts row card component">
+    <div class="card-body">
+      <h2 class="card-title">精选文章</h2>
+      <ul><li><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
+</a></li><li><a href="/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
+</a></li><li><a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
+</a></li><li><a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
+</a></li><li><a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a></li></ul>
+    </div>
+  </section><section class="recent-posts row card component">
+  <div class="card-body">
+    <h2 class="card-title">最近文章</h2>
+    <ul><li><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
+</a></li><li><a href="/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
+</a></li><li><a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
+</a></li><li><a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
+</a></li><li><a href="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a></li></ul>
+  </div>
+</section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/categories">分类</a>
+        </h2>
+        <div><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="后端">
+            后端
+          </a><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="数据库">
+            数据库
+          </a><a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开发工具">
+            开发工具
+          </a><a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="虚拟机">
+            虚拟机
+          </a><a href="/categories/%E8%B7%A8%E5%9F%9F/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="跨域">
+            跨域
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/series">专栏</a>
+        </h2>
+        <div><a href="/series/java/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Java">
+            Java
+          </a><a href="/series/mysql/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="mysql">
+            mysql
+          </a><a href="/series/springboot/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="springboot">
+            springboot
+          </a><a href="/series/docker/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="docker">
+            docker
+          </a><a href="/series/intellij-idea/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="IntelliJ IDEA">
+            IntelliJ IDEA
+          </a><a href="/series/spring/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="spring">
+            spring
+          </a><a href="/series/vmware/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="vmware">
+            vmware
+          </a><a href="/series/%E5%BC%80%E5%BF%83%E4%B8%80%E4%B8%8B/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开心一下">
+            开心一下
+          </a><a href="/series/%E8%AF%AD%E8%A8%80/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="语言">
+            语言
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/tags">标签</a>
+        </h2>
+        <div><a href="/tags/jvm/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="jvm">
+            jvm
+          </a><a href="/tags/log4j/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="log4j">
+            log4j
+          </a><a href="/tags/redis/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="redis">
+            redis
+          </a><a href="/tags/string/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="String">
+            String
+          </a><a href="/tags/%E5%88%87%E9%9D%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="切面">
+            切面
+          </a><a href="/tags/%E7%9F%AD%E4%BF%A1/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="短信">
+            短信
+          </a><a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="类加载机制">
+            类加载机制
+          </a><a href="/tags/%E8%BA%BA%E5%B9%B3/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="躺平">
+            躺平
+          </a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"></nav>
+<div class="copyright mb-2">
+  Copyright © 2020-2021 All Rights Reserved.
+</div>
+</footer>
+
+</body>
+</html>

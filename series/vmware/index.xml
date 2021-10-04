@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vmware on 老雷的博客</title>
+    <link>/series/vmware/</link>
+    <description>Recent content in vmware on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/series/vmware/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vmware虚拟机如何设置固定IP</title>
+      <link>/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/</link>
+      <pubDate>Mon, 21 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/</guid>
+      <description>前言：虚拟机相信各位小伙伴一定不陌生，我们平时在做项目框架搭建和测试时为了模拟多机器环境经常会用到，但对于初学者不太友好的就是，如果虚拟机或</description>
+    </item>
+    
+  </channel>
+</rss>

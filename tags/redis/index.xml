@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>redis on 老雷的博客</title>
+    <link>/tags/redis/</link>
+    <description>Recent content in redis on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Tue, 30 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker安装redis使用自定义配置，启动失败</title>
+      <link>/posts/docker%E5%AE%89%E8%A3%85redis%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/</link>
+      <pubDate>Tue, 30 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/docker%E5%AE%89%E8%A3%85redis%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/</guid>
+      <description>@TOC 代码如下： 1docker run -p 6379:6379 --name redis-test 2-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 3-v /usr/local/docker/redis/data:/data 4-d redis redis-server /etc/redis/redis.conf 5--appendonly yes 但是始终不行，后来查原因为【redis.conf】文件里面有一个配置设置错误 因为之前是手动安装的</description>
+    </item>
+    
+  </channel>
+</rss>
