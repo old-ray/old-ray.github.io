@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>log4j on 老雷的博客</title>
+    <link>/zh-cn/tags/log4j/</link>
+    <description>Recent content in log4j on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Fri, 23 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/zh-cn/tags/log4j/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>springboot &#43; log4j2 演示demo</title>
+      <link>/zh-cn/posts/springboot-&#43;-log4j2-%E6%BC%94%E7%A4%BAdemo/</link>
+      <pubDate>Fri, 23 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/posts/springboot-&#43;-log4j2-%E6%BC%94%E7%A4%BAdemo/</guid>
+      <description>项目中一直有使用日志，以前都是面向CV编程，今天整理了下常用的两种输出方式（ConsoleAppendert和RollingRandomAc</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>短信 on 老雷的博客</title>
+    <link>/zh-cn/tags/%E7%9F%AD%E4%BF%A1/</link>
+    <description>Recent content in 短信 on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Sun, 30 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/zh-cn/tags/%E7%9F%AD%E4%BF%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>App发送短信验证码实现</title>
+      <link>/zh-cn/posts/app%E5%8F%91%E9%80%81%E7%9F%AD%E4%BF%A1%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Sun, 30 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/zh-cn/posts/app%E5%8F%91%E9%80%81%E7%9F%AD%E4%BF%A1%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0/</guid>
+      <description>前言： 现如今，电话是接外卖和快递的，短信是用来收验证码的。那么像一般的App里面使用手机号+验证码方式进行注册或登录是怎样实现的呢？这篇文章</description>
+    </item>
+    
+  </channel>
+</rss>

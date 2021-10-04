@@ -1,0 +1,341 @@
+<!doctype html><html lang="zh-cn"
+   data-mode="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Java大头：垃圾收集器（二） - 老雷的博客</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/images/favicons/manifest.json">
+<link rel="icon" href="/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="Java大头：垃圾收集器（二）" /><meta itemprop="name" content="Java大头：垃圾收集器（二）">
+<meta itemprop="description" content="Java大头：垃圾收集器（二）"><meta itemprop="datePublished" content="2021-06-13T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-06-13T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1824">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Java大头：垃圾收集器（二）" />
+<meta property="og:description" content="Java大头：垃圾收集器（二）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-13T00:00:00+00:00" /><meta property="og:site_name" content="老雷的博客" />
+<meta property="og:see_also" content="/zh-cn/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" /><meta property="og:see_also" content="/zh-cn/posts/%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95/" /><meta property="og:see_also" content="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/" /><meta property="og:see_also" content="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/" /><meta property="og:see_also" content="/zh-cn/posts/jstack%E5%AD%A6%E4%B9%A0%E6%89%BE%E5%87%BAcpu%E9%A3%99%E5%8D%87%E4%BB%A3%E7%A0%81/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java大头：垃圾收集器（二）"/>
+<meta name="twitter:description" content="Java大头：垃圾收集器（二）"/>
+<link rel="preload" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/css/bundle.min.8319446f91217adba734bb6bcdb98b4f454c4144d3c7fe24c67f6937ff869579.css" integrity="sha256-gxlEb5EhetunNLtrzbmLT0VMQUTTx/4kxn9pN/&#43;GlXk=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.d3419b286c1fa828f5397db29094469870b05b819f0ddafff0da5da40d0bdd61.js" integrity="sha256-00GbKGwfqCj1OX2ykJRGmHCwW4GfDdr/8NpdpA0L3WE=" crossorigin="anonymous"></script></head>
+  <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-settings me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="offcanvas offcanvas-start surface" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="/fr/"></a></li><li><a class="dropdown-item" href="/zh-tw/"></a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+
+
+
+
+<section class="setting social-share">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-share-alt"></i> Share</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a class="btn btn-sm btn-outline-primary btn-social-share"><i class="fas fa-share"></i></a>
+    </div>
+  </form>
+  <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Java%e5%a4%a7%e5%a4%b4%ef%bc%9a%e5%9e%83%e5%9c%be%e6%94%b6%e9%9b%86%e5%99%a8%ef%bc%88%e4%ba%8c%ef%bc%89&url=%2fzh-cn%2fposts%2fjava%25E5%25A4%25A7%25E5%25A4%25B4%25E5%259E%2583%25E5%259C%25BE%25E6%2594%25B6%25E9%259B%2586%25E5%2599%25A8%25E4%25BA%258C%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fzh-cn%2fposts%2fjava%25E5%25A4%25A7%25E5%25A4%25B4%25E5%259E%2583%25E5%259C%25BE%25E6%2594%25B6%25E9%259B%2586%25E5%2599%25A8%25E4%25BA%258C%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</section>
+
+</div>
+</div>
+<a class="navbar-brand me-3" href="/zh-cn/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
+   width="300" height="300"
+   />
+老雷的博客空间
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="/zh-cn/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="/zh-cn/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/zh-cn/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/zh-cn/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/zh-cn/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/zh-cn/">主页</a></li><li class="breadcrumb-item"><a href="/zh-cn/posts/">文章</a></li><li class="breadcrumb-item active">Java大头：垃圾收集器（二）</li></ol>
+  </div>
+</nav><article class="post row card mb-4 component">
+  <div class="card-body"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-arrows-alt"></i>
+</a>
+  
+    
+
+    
+    
+    
+  </div>
+</div>
+<h1 class="card-title my-3">Java大头：垃圾收集器（二）
+</h1><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-13
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
+  </span><a href="/zh-cn/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/zh-cn/series/java/" class="post-taxonomy">Java</a></div>
+<div class="post-content mb-3"><blockquote>
+<p>前言：话接上篇讲了垃圾收集器的几大算法，本篇主要讲对应算法的一些实现。话不多说，先看一张图。</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210618204406344.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>图中主要介绍了目前主流的几款垃圾收集器（图中连线表示可以组合收集，不过CMS到Serial Old除外，我标为了红色）。其中Serial，ParNew，Parallel主要负责对年轻代的垃圾回收，CMS，Serial Old，Parallel Old，则是主要对老年代的垃圾回收，G1垃圾收集器就比较厉害，年轻代和老年代都由他收集。</p>
+<blockquote>
+<p>就目前而言，没有万能的垃圾收集器，我们需要依据自身的业务情况来选择不同的垃圾收集器。因此清楚掌握每一种垃圾收集器的优缺点也是我们Java开发人员需要学习的一项技能。（PS：方便可以吹水）</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/202106182114451.png" loading="lazy"
+  
+   />
+
+</p>
+<h6 id="一serial收集器">一，Serial收集器</h6>
+<p>串行垃圾收集器。当他进行垃圾收集时，会直接暂停所有用户线程，直到收集结束，通俗地说就是一刀切。我们看下运行图：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210618213115762.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>Serial + Serial Old 收集器他在收集过程中不光Stop The World，而且他本身还是单线程去收集垃圾对象（年轻代采用复制算法，老年代采用标记整理算法），总体来说serial收集器结构比较简单，垃圾回收的速率比较慢，频繁的STW体验也不友好。</p>
+<h6 id="二parallel收集器">二，Parallel收集器</h6>
+<p>随着我们服务器配置越来越高级，我们上面说了Serial收集器是单线程收集，那跟现在的配置相比就显示有点能力跟不上了。正因如此，就出现了Parallel收集器（平行垃圾收集器）。他是可以多线程并发进行垃圾收集，就像一把散弹枪一样，我们看下图：</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210618215525542.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>Parallel + Parallel Old收集器同样也会直接暂停用户线程(STW)，默认的收集线程跟cpu核数相同，也可以指定收集线程数（-XX:ParallelGCThreads），但一般默认不改他。</p>
+<h6 id="三parnew收集器">三，ParNew收集器</h6>
+<p>ParNew收集器与Parallel很类似，这里就不画图了，他们区别就在于ParNew可以与我们接下来讲的CMS垃圾收集器组合使用</p>
+<h6 id="四cms收集器concurrent-mark-sweep">四，CMS收集器（Concurrent Mark Sweep）</h6>
+<p>关于CMS收集器在面试中一般就是重灾区了。因为他用起来是真香。像上面三种收集器，他们整个垃圾收集过程几乎都是STW的，虽然专一，吞吐量高，但同时停顿时间长，对于如今的互联网环境，系统卡顿几乎是一件让人无法忍受的事情。而CMS不一样，他非常注意用户的体验，它第一次实现了gc线程与用户线程同时工作（几乎）。</p>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/2021061822331316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2Nzk2MjU1,size_16,color_FFFFFF,t_70" loading="lazy"
+  
+   />
+
+</p>
+<p>初始标记：暂停所有的用户线程，并标记GC Root的直接可达对象，速度很快。</p>
+<p>并发标记：从GC Root的直接关联对象向下遍历所有对象，所以过程耗时比较长，但是此处不需要停止用户线程，可以同时与gc线程一同运行。</p>
+<p>重新标记：因为在并发标记过程中，很可能对象的状态已经发生变动（对象在并发过程中是可达的，但是在并发结束后马上变成垃圾对象了），所以此步骤是一个查漏补缺的操作，但是相比较于并发标记STW，此步骤耗时就少多了。</p>
+<p>并发清理：GC开始对垃圾对象进行回收，并且用户线程也可以同时运行。</p>
+<p>并发重置：重置本次GC过程中的标记数据。</p>
+<blockquote>
+<p>CMS收集器是一种 “标记-清除”算法实现的，它相比较前面几种垃圾收集器来说算法就更加复杂。但他的优点也是显示易见的，他的停顿点就只有一开始的初始标记和后面的重新标记，这两点的处理速度是非常快速的，所以用户就更容易接受，仅管CMS的GC时间可能比上面几种垃圾收集器的时间更长。</p>
+</blockquote>
+<p><strong>但CMS收集器也不是毫无毛病的</strong>，他的缺点也比较明显：</p>
+<p>1，CMS在并发标记和并发清理过程中会产生的垃圾就没办法在本次gc过程中回收，只能等到下次gc清理，所以会产生浮动垃圾。</p>
+<p>2，因为CMS使用标记清除算法，所以会产生大量的空间碎片，但是他有参数可以设置在gc完成后进行整理（-XX:+UseCMSCompactAtFullCollection）</p>
+<p>3，我们都知道gc是因为内存空间快要消耗完了我们才会进行回收，但由于CMS在gc过程中用户线程还是运行的，如果gc过程中用户线程以产生了一个大对象放到堆里面，堆空间放不下了，这时就会再次触发“concurrent mode failure”，直接导致STW，然后改为serial old收集器进行回收（<strong>本节第一个图中用红线连接的情况</strong>）</p>
+<blockquote>
+<p>总结：尽管垃圾收集器的出现使用我们程序员不用再去做手动释放内存这种劳心劳力的操作，但并不代表我们就可以完全不用了解他，只做一个拿来主义者。相反这是你区别于其他开发人员的一个关键指标（都给我卷起来）。好了今天就到这里啦，下期我们接着讲一下G1收集器，我是阿雷，一个只敢喝无糖可乐的程序员。</p>
+</blockquote>
+<p><img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/20210618230929291.png" loading="lazy"
+  
+   />
+
+</p>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
+</a>
+  </div><div class="post-nav post-next">
+    <a href="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="/zh-cn/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
+</a></li><li><a href="/zh-cn/posts/jstack%E5%AD%A6%E4%B9%A0%E6%89%BE%E5%87%BAcpu%E9%A3%99%E5%8D%87%E4%BB%A3%E7%A0%81/">Jstack学习：找出cpu飙升代码
+</a></li><li><a href="/zh-cn/posts/%E9%87%8D%E8%AF%86hashmap%E4%B8%89/">重识HashMap（三）
+</a></li><li><a href="/zh-cn/posts/%E9%87%8D%E8%AF%86hashmap%E4%BA%8C/">重识HashMap（二）
+</a></li><li><a href="/zh-cn/posts/%E9%87%8D%E8%AF%86hashmap%E4%B8%80/">重识HashMap（一）
+</a></li></ul>
+  </section></div>
+</article></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Old Ray" src="/images/profile.webp" loading="lazy"
+   width="640" height="640"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">Old Ray</div><div class="profile-bio">Java开发攻城狮</div><div class="profile-company"><i class="fas fa-fw fa-building"></i>心和未来</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东·深圳</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://www.leiwang.vip/zh-cn/about/%E5%85%B3%E4%BA%8E%E6%88%91/">关于我</a></div></div>
+  </div>
+</section>
+  <section class="featured-posts row card component">
+    <div class="card-body">
+      <h2 class="card-title">精选文章</h2>
+      <ul><li><a href="/zh-cn/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
+</a></li><li><a href="/zh-cn/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
+</a></li><li><a href="/zh-cn/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
+</a></li><li><a href="/zh-cn/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
+</a></li><li><a href="/zh-cn/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a></li></ul>
+    </div>
+  </section><section class="recent-posts row card component">
+  <div class="card-body">
+    <h2 class="card-title">最近文章</h2>
+    <ul><li><a href="/zh-cn/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
+</a></li><li><a href="/zh-cn/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
+</a></li><li><a href="/zh-cn/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
+</a></li><li><a href="/zh-cn/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
+</a></li><li><a href="/zh-cn/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/">由mysql索引想到的几种“树”据结构
+</a></li></ul>
+  </div>
+</section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/zh-cn/categories">分类</a>
+        </h2>
+        <div><a href="/zh-cn/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="后端">
+            后端
+          </a><a href="/zh-cn/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="数据库">
+            数据库
+          </a><a href="/zh-cn/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开发工具">
+            开发工具
+          </a><a href="/zh-cn/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="虚拟机">
+            虚拟机
+          </a><a href="/zh-cn/categories/%E8%B7%A8%E5%9F%9F/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="跨域">
+            跨域
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/zh-cn/series">专栏</a>
+        </h2>
+        <div><a href="/zh-cn/series/java/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Java">
+            Java
+          </a><a href="/zh-cn/series/mysql/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="mysql">
+            mysql
+          </a><a href="/zh-cn/series/springboot/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="springboot">
+            springboot
+          </a><a href="/zh-cn/series/docker/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="docker">
+            docker
+          </a><a href="/zh-cn/series/intellij-idea/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="IntelliJ IDEA">
+            IntelliJ IDEA
+          </a><a href="/zh-cn/series/spring/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="spring">
+            spring
+          </a><a href="/zh-cn/series/vmware/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="vmware">
+            vmware
+          </a><a href="/zh-cn/series/%E5%BC%80%E5%BF%83%E4%B8%80%E4%B8%8B/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开心一下">
+            开心一下
+          </a><a href="/zh-cn/series/%E8%AF%AD%E8%A8%80/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="语言">
+            语言
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/zh-cn/tags">标签</a>
+        </h2>
+        <div><a href="/zh-cn/tags/jvm/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="jvm">
+            jvm
+          </a><a href="/zh-cn/tags/log4j/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="log4j">
+            log4j
+          </a><a href="/zh-cn/tags/redis/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="redis">
+            redis
+          </a><a href="/zh-cn/tags/string/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="String">
+            String
+          </a><a href="/zh-cn/tags/%E5%88%87%E9%9D%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="切面">
+            切面
+          </a><a href="/zh-cn/tags/%E7%9F%AD%E4%BF%A1/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="短信">
+            短信
+          </a><a href="/zh-cn/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="类加载机制">
+            类加载机制
+          </a><a href="/zh-cn/tags/%E8%BA%BA%E5%B9%B3/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="躺平">
+            躺平
+          </a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"></nav>
+<div class="copyright mb-2">
+  Copyright © 2020-2021 All Rights Reserved.
+</div>
+</footer>
+
+</body>
+</html>
