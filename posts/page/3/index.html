@@ -110,6 +110,19 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component">
       <div class="card-body">
+        <h2 class="card-title post-title"><a href="/posts/jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">JVM内存结构详解
+</a></h2><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-06-03
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>4 分钟阅读
+  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/java/" class="post-taxonomy">Java</a><a href="/tags/jvm/" class="post-taxonomy">jvm</a></div>
+<div class="post-summary">
+          
+          前言：JVM就是我们平时开发经常提到的Java虚拟机（Java Virtual Machine），既然是虚拟机，那他肯定具备真实计算机的功能，只不过不是从硬
+        </div>
+      </div>
+    </article><article class="row card post component">
+      <div class="card-body">
         <h2 class="card-title post-title"><a href="/posts/%E5%81%87%E5%A6%82%E8%BA%BA%E5%B9%B3%E4%B9%9F%E5%BC%80%E5%A7%8B%E5%86%85%E5%8D%B7/">假如躺平也开始内卷。。。
 </a></h2><div class="post-meta"><span class="post-date" title="created on">
     <i class="fas fa-fw fa-calendar-alt"></i>2021-06-02
@@ -225,19 +238,6 @@
           @TOC 今天跟前端同事联调接口时发现一个非常奇葩的事情，我写的有些接口可以访问，有一些却提示跨域？？？，但是我自己用postman调试又没问题，为
         </div>
       </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/docker%E5%AE%89%E8%A3%85redis%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/">Docker安装redis使用自定义配置，启动失败
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>2021-03-30
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>1 分钟阅读
-  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/docker/" class="post-taxonomy">docker</a><a href="/tags/redis/" class="post-taxonomy">redis</a></div>
-<div class="post-summary">
-          
-          @TOC 代码如下： 1docker run -p 6379:6379 --name redis-test 2-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 3-v /usr/local/docker/redis/data:/data 4-d redis redis-server /etc/redis/redis.conf 5--appendonly yes 但是始终不行，后来查原因为【redis.conf】文件里面有一个配置设置错误 因为之前是手动安装的
-        </div>
-      </div>
     </article></div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -255,11 +255,14 @@
       <li class="page-item active">
         <a href="#" aria-current="page" aria-label="Page 3" class="page-link" role="button">3</a>
       </li>
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="Next" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&raquo;</span></a>
+      <li class="page-item">
+        <a href="/posts/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
       </li>
-      <li class="page-item disabled">
-        <a href="#" aria-disabled="true" aria-label="Last" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      <li class="page-item">
+        <a href="/posts/page/4/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/4/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul></div>
 </div>
@@ -279,7 +282,8 @@
   <section class="featured-posts row card component">
     <div class="card-body">
       <h2 class="card-title">精选文章</h2>
-      <ul><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
+      <ul><li><a href="/posts/docker%E5%AE%89%E8%A3%85jenkins%E9%83%A8%E7%BD%B2springboot%E9%A1%B9%E7%9B%AE/">Docker安装jenkins部署springboot项目
+</a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
 </a></li><li><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
 </a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
 </a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
@@ -288,17 +292,16 @@
 </a></li><li><a href="/posts/%E9%87%8D%E8%AF%86hashmap%E4%BA%8C/">重识HashMap（二）
 </a></li><li><a href="/posts/%E9%87%8D%E8%AF%86hashmap%E4%B8%80/">重识HashMap（一）
 </a></li><li><a href="/posts/jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/">JVM内存结构详解
-</a></li><li><a href="/posts/app%E5%8F%91%E9%80%81%E7%9F%AD%E4%BF%A1%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0/">App发送短信验证码实现
 </a></li></ul>
     </div>
   </section><section class="recent-posts row card component">
   <div class="card-body">
     <h2 class="card-title">最近文章</h2>
-    <ul><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
+    <ul><li><a href="/posts/docker%E5%AE%89%E8%A3%85jenkins%E9%83%A8%E7%BD%B2springboot%E9%A1%B9%E7%9B%AE/">Docker安装jenkins部署springboot项目
+</a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
 </a></li><li><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
 </a></li><li><a href="/posts/%E7%BC%96%E8%AF%91spring%E7%9A%84%E6%BA%90%E7%A0%81/">编译spring的源码
 </a></li><li><a href="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/">MVCC处理可重复读理解
-</a></li><li><a href="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Mysql事务隔离级别
 </a></li></ul>
   </div>
 </section><section class="taxonomies row card component">
@@ -354,6 +357,8 @@
         </h2>
         <div><a href="/tags/hugo/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="HUGO">
             HUGO
+          </a><a href="/tags/jenkins/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Jenkins">
+            Jenkins
           </a><a href="/tags/jvm/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="jvm">
             jvm
           </a><a href="/tags/log4j/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="log4j">
