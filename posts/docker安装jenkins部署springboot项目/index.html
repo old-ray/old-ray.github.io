@@ -12,7 +12,7 @@
 <meta name="description" content="Docker安装jenkins部署springboot项目" /><meta itemprop="name" content="Docker安装jenkins部署springboot项目">
 <meta itemprop="description" content="Docker安装jenkins部署springboot项目"><meta itemprop="datePublished" content="2022-11-15T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2022-11-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="863">
+<meta itemprop="wordCount" content="856">
 <meta itemprop="keywords" content="Jenkins," /><meta property="og:title" content="Docker安装jenkins部署springboot项目" />
 <meta property="og:description" content="Docker安装jenkins部署springboot项目" />
 <meta property="og:type" content="article" />
@@ -151,12 +151,11 @@
 <span class="ln"> 4</span>mkdir -p /var/jenkins_mount
 <span class="ln"> 5</span>chmod <span class="m">777</span> /var/jenkins_mount
 <span class="ln"> 6</span><span class="c1"># 三，运行，我这里将jdk和maven仓库存放的目录也放进来了</span>
-<span class="ln"> 7</span>docker run -d -p 9901:8080 -p 10241:50000 -p 8002:8002 -p 8003:8003 -p 8006:8006 -p 8007:8007 -v /var/jenkins_mount:/var/jenkins_home -v /etc/localtime:/etc/localtime -v /data/www/xhapi:/data/www/xhapi -v /root/.m2:/root/.m2 -v /server/jdk1_8:/server/jdk1_8 --name myjenkins jenkins/jenkins
+<span class="ln"> 7</span>docker run -d -p 9901:8080 -p 10241:50000 -p 8002:8002 -p 8003:8003 -p 8006:8006 -p 8007:8007 -v /var/jenkins_mount:/var/jenkins_home -v /etc/localtime:/etc/localtime -v /data/www/program:/data/www/program -v /root/.m2:/root/.m2 -v /server/jdk1_8:/server/jdk1_8 --name myjenkins jenkins/jenkins
 <span class="ln"> 8</span><span class="c1"># 四，通过浏览器访问jenkins控制台</span>
-<span class="ln"> 9</span>jenkins.test.xinheshu.com
-<span class="ln">10</span><span class="c1"># 五，安装maven插件，我选的推荐安装里没有安装maven插件，这里安装一下，这样在创建任务的时候可以创建java项目了</span>
-<span class="ln">11</span><span class="c1"># 六，其他，下面的命令是我在打包xin-admin项目的时候用到的，这样可以单独安装xinhe-admin</span>
-<span class="ln">12</span>clean install -pl xinhe-admin -am -amd
+<span class="ln"> 9</span><span class="c1"># 五，安装maven插件，我选的推荐安装里没有安装maven插件，这里安装一下，这样在创建任务的时候可以创建java项目了</span>
+<span class="ln">10</span><span class="c1"># 六，其他，下面的命令是我在打包product项目的时候用到的，这样可以单独安装product</span>
+<span class="ln">11</span>clean install -pl product -am -amd
 </code></pre></div></div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
     <a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
