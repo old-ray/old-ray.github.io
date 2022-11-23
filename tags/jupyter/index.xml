@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jupyter on 老雷的博客</title>
+    <link>/tags/jupyter/</link>
+    <description>Recent content in Jupyter on 老雷的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Sun, 13 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/jupyter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JupyterLab服务端使用详解</title>
+      <link>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</guid>
+      <description>自已工作和学习的资料存储 使用说明 Anaconda 安装 参考链接： https://blog.csdn.net/wyf2017/article/details/118676765 https://zhuanlan.zhihu.com/p/94744929 去官网下载想要的版本： https://repo.anaconda.com/archive/ 一般下载sh文件直接运行就可以了，Linux环境使用wget命令</description>
+    </item>
+    
+  </channel>
+</rss>

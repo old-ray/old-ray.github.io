@@ -27,6 +27,15 @@
     </item>
     
     <item>
+      <title>JupyterLab服务端使用详解</title>
+      <link>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</guid>
+      <description>自已工作和学习的资料存储 使用说明 Anaconda 安装 参考链接： https://blog.csdn.net/wyf2017/article/details/118676765 https://zhuanlan.zhihu.com/p/94744929 去官网下载想要的版本： https://repo.anaconda.com/archive/ 一般下载sh文件直接运行就可以了，Linux环境使用wget命令</description>
+    </item>
+    
+    <item>
       <title>搭建个人博客（一）：Hugo 框架构建网站</title>
       <link>/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/</link>
       <pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate>
