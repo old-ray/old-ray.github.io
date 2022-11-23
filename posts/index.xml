@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 22 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JupyterLab服务端使用详解</title>
+      <link>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Wed, 23 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</guid>
+      <description>自已工作和学习的资料存储 使用说明 Anaconda 安装 参考链接： https://blog.csdn.net/wyf2017/article/details/118676765 https://zhuanlan.zhihu.com/p/94744929 去官网下载想要的版本： https://repo.anaconda.com/archive/ 一般下载sh文件直接运行就可以了，Linux环境使用wget命令</description>
+    </item>
+    
     <item>
       <title>RocketMQ集群搭建</title>
       <link>/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</link>
@@ -24,15 +33,6 @@
       
       <guid>/posts/docker%E5%AE%89%E8%A3%85jenkins%E9%83%A8%E7%BD%B2springboot%E9%A1%B9%E7%9B%AE/</guid>
       <description>Docker安装jenkins部署springboot项目 起因：测试服务器要过期了，想着新购一台服务器会便宜百来块钱，出于为公司省钱的心理，</description>
-    </item>
-    
-    <item>
-      <title>JupyterLab服务端使用详解</title>
-      <link>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</link>
-      <pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</guid>
-      <description>自已工作和学习的资料存储 使用说明 Anaconda 安装 参考链接： https://blog.csdn.net/wyf2017/article/details/118676765 https://zhuanlan.zhihu.com/p/94744929 去官网下载想要的版本： https://repo.anaconda.com/archive/ 一般下载sh文件直接运行就可以了，Linux环境使用wget命令</description>
     </item>
     
     <item>
