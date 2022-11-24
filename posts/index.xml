@@ -305,5 +305,14 @@
       <description>@TOC 代码如下： 1docker run -p 6379:6379 --name redis-test 2-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 3-v /usr/local/docker/redis/data:/data 4-d redis redis-server /etc/redis/redis.conf 5--appendonly yes 但是始终不行，后来查原因为【redis.conf】文件里面有一个配置设置错误 因为之前是手动安装的</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/</guid>
+      <description>做这件事情的原因可真是说来话长。最近想写一些东西放到博客上面，但发现markdown编辑工具过期了，之前用的Typorea，而且Typore</description>
+    </item>
+    
   </channel>
 </rss>
