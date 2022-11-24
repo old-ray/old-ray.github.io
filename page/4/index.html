@@ -107,6 +107,19 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component">
       <div class="card-body">
+        <h2 class="card-title post-title"><a href="/posts/springboot-%E4%BD%BF%E7%94%A8%E5%88%87%E9%9D%A2%E8%AE%B0%E5%BD%95%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B8%8E%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C/">Springboot 使用切面记录请求参数与返回结果
+</a></h2><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>2021-04-16
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>2 分钟阅读
+  </span><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy">后端</a><a href="/series/springboot/" class="post-taxonomy">springboot</a><a href="/tags/%E5%88%87%E9%9D%A2/" class="post-taxonomy">切面</a></div>
+<div class="post-summary">
+          
+          使用切面记录请求参数与返回结果 因为在上月底有一次大的版本上线，而因为前期测试不足导致上线后系统不太稳定，所以才打算把这块补上。。。 1@Aspect 2@Component 3@Order(1) //
+        </div>
+      </div>
+    </article><article class="row card post component">
+      <div class="card-body">
         <h2 class="card-title post-title"><a href="/posts/intellij-idea-%E5%BF%BD%E7%95%A5%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6/">IntelliJ IDEA 忽略项目文件
 </a></h2><div class="post-meta"><span class="post-date" title="created on">
     <i class="fas fa-fw fa-calendar-alt"></i>2021-04-15
@@ -142,19 +155,6 @@
 <div class="post-summary">
           
           @TOC 代码如下： 1docker run -p 6379:6379 --name redis-test 2-v /usr/local/docker/redis/redis.conf:/etc/redis/redis.conf 3-v /usr/local/docker/redis/data:/data 4-d redis redis-server /etc/redis/redis.conf 5--appendonly yes 但是始终不行，后来查原因为【redis.conf】文件里面有一个配置设置错误 因为之前是手动安装的
-        </div>
-      </div>
-    </article><article class="row card post component">
-      <div class="card-body">
-        <h2 class="card-title post-title"><a href="/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">
-</a></h2><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>0001-01-01
-  </span><span class="post-reading-time" title="reading time">
-    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
-  </span></div>
-<div class="post-summary">
-          
-          做这件事情的原因可真是说来话长。最近想写一些东西放到博客上面，但发现markdown编辑工具过期了，之前用的Typorea，而且Typore
         </div>
       </div>
     </article></div><div class="row table-responsive mb-3">
@@ -216,11 +216,11 @@
   </section><section class="recent-posts row card component">
   <div class="card-body">
     <h2 class="card-title">最近文章</h2>
-    <ul><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
+    <ul><li><a href="/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">搭建自已的图床
+</a></li><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
 </a></li><li><a href="/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">RocketMQ集群搭建
 </a></li><li><a href="/posts/docker%E5%AE%89%E8%A3%85jenkins%E9%83%A8%E7%BD%B2springboot%E9%A1%B9%E7%9B%AE/">Docker安装jenkins部署springboot项目
 </a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
-</a></li><li><a href="/posts/vmware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%9B%BA%E5%AE%9Aip/">Vmware虚拟机如何设置固定IP
 </a></li></ul>
   </div>
 </section><section class="taxonomies row card component">
@@ -232,6 +232,8 @@
             后端
           </a><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="数据库">
             数据库
+          </a><a href="/categories/%E5%8D%9A%E5%AE%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="博客">
+            博客
           </a><a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开发工具">
             开发工具
           </a><a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="虚拟机">
