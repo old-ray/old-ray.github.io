@@ -165,7 +165,7 @@
 里面也有windows版本的文件，如果要直接看效果的话用windows,因为linux一般是命令控制台无法查看效果，除非是通过宝搭或者虚拟机中查看。但如果要发布到外网的Linux服务器，还是建议在Linux系统上安装和打包，阿雷就吃过亏。后续会总结遇到的一些坑。</p>
 <h5 id="安装">安装</h5>
 <h6 id="linux系统">Linux系统</h6>
-<p>将安装包移动到<!-- raw HTML omitted --><strong>/usr/local/bin</strong><!-- raw HTML omitted -->目录下解压即可，解压命令如下</p>
+<p>将安装包移动到<mark><strong>/usr/local/bin</strong></mark>目录下解压即可，解压命令如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>$ tar zxvf hugo_0.88.1_Linux-64bit.tar.gz
 </code></pre></div><p>解压出来就几个文件，主要就是hugo这个文件，到此就安装完成了，非常简单
 <img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/c95c8f5f01e240a5ae0fcf81483adcd9.png" loading="lazy"
@@ -174,8 +174,8 @@
 
 </p>
 <h6 id="windows系统">Windows系统</h6>
-<p>同样也是下载windows系统的安装包，解压目录可以解压到<!-- raw HTML omitted --><strong>C:\Windows\System32</strong><!-- raw HTML omitted -->目录下，或者把解压目录添加到环境变量Path目录里面，保证系统可以找到执行文件都可以，(hugo命令是不能直接双击打开的，必须使用命令)。</p>
-<p>测试下是否安装成功，在控制台输入<!-- raw HTML omitted --><strong>hugo &ndash;help</strong><!-- raw HTML omitted -->命令，如果有打印出版本信息表示安装成功
+<p>同样也是下载windows系统的安装包，解压目录可以解压到<mark><strong>C:\Windows\System32</strong></mark>目录下，或者把解压目录添加到环境变量Path目录里面，保证系统可以找到执行文件都可以，(hugo命令是不能直接双击打开的，必须使用命令)。</p>
+<p>测试下是否安装成功，在控制台输入<mark><strong>hugo &ndash;help</strong></mark>命令，如果有打印出版本信息表示安装成功
 <img class="img-fluid" alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/6facecec77d44c729f15cdeddd56c55e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA6Zi_6Zu35Zyo57yW56iL,size_20,color_FFFFFF,t_70,g_se,x_16" loading="lazy"
   
    />
@@ -199,7 +199,7 @@
 ）</h5>
 <p>选择自己中意的主题(<strong>以hugo-theme-bootstrap为例，各主题会略有不同</strong>)，点击进去，里面会有安装操作，但一般都是通过git方式下载主题的，git安装和使用就不作说明了，没了解的可以去找个教程看下<a href="https://www.runoob.com/git/git-tutorial.html" target="_blank" rel="noopener noreferrer">传送门</a>
 
-把主题下载到<!-- raw HTML omitted --><strong>thems</strong><!-- raw HTML omitted -->目录下，这里建议大家直接克隆下来，不要引用成git的子模块
+把主题下载到<mark><strong>thems</strong></mark>目录下，这里建议大家直接克隆下来，不要引用成git的子模块
 命令如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1"># 主题里面介绍的是引用成git子模式的方式，下文有介绍克隆主题的方式。</span>
 <span class="ln">2</span>$ git submodule add https://github.com/razonyang/hugo-theme-bootstrap themes/hugo-theme-bootstrap
