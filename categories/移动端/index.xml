@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>移动端 on 个人学习展示</title>
+    <link>/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/</link>
+    <description>Recent content in 移动端 on 个人学习展示</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
+    <lastBuildDate>Wed, 30 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Glide自适应屏幕宽高度</title>
+      <link>/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/</link>
+      <pubDate>Wed, 30 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/</guid>
+      <description>前言：今天终于实现了图片的自适应，之前搜出来的例子一个都用不了，这里记录下。 标签 1&amp;lt;!-- 2adjustViewBounds设置为true 3注意父类</description>
+    </item>
+    
+  </channel>
+</rss>

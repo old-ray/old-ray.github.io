@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
-    <lastBuildDate>Thu, 24 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>移动端</title>
+      <link>/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/</link>
+      <pubDate>Wed, 30 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>博客</title>
       <link>/categories/%E5%8D%9A%E5%AE%A2/</link>
