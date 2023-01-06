@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 19 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mysql主从搭建与数据重新同步操作步骤</title>
+      <link>/posts/mysql%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/</link>
+      <pubDate>Fri, 06 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/mysql%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/</guid>
+      <description>搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上</description>
+    </item>
+    
     <item>
       <title>MVCC处理可重复读理解</title>
       <link>/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/</link>

@@ -3,26 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> - 个人学习展示</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+    <title>Mysql主从搭建与数据重新同步操作步骤 - 个人学习展示</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="manifest" href="/images/favicons/manifest.json">
 <link rel="icon" href="/images/favicons/favicon.ico">
 <meta name="keywords" content="" />
-<meta name="description" content="" /><meta itemprop="name" content="">
-<meta itemprop="description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上">
-
+<meta name="description" content="Mysql主从搭建与数据重新同步操作步骤" /><meta itemprop="name" content="Mysql主从搭建与数据重新同步操作步骤">
+<meta itemprop="description" content="Mysql主从搭建与数据重新同步操作步骤"><meta itemprop="datePublished" content="2023-01-06T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-01-06T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1225">
-<meta itemprop="keywords" content="" /><meta property="og:title" content="" />
-<meta property="og:description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上" />
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Mysql主从搭建与数据重新同步操作步骤" />
+<meta property="og:description" content="Mysql主从搭建与数据重新同步操作步骤" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/mysql%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/" /><meta property="article:section" content="posts" />
-
-<meta property="og:site_name" content="个人学习展示" />
+<meta property="article:published_time" content="2023-01-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-06T00:00:00+00:00" /><meta property="og:site_name" content="个人学习展示" />
+<meta property="og:see_also" content="/posts/mvcc%E5%A4%84%E7%90%86%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E7%90%86%E8%A7%A3/" /><meta property="og:see_also" content="/posts/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" /><meta property="og:see_also" content="/posts/%E7%94%B1mysql%E7%B4%A2%E5%BC%95%E6%83%B3%E5%88%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E6%A0%91%E6%8D%AE%E7%BB%93%E6%9E%84/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上"/>
+<meta name="twitter:title" content="Mysql主从搭建与数据重新同步操作步骤"/>
+<meta name="twitter:description" content="Mysql主从搭建与数据重新同步操作步骤"/>
 <link rel="preload" href="/css/bundle.min.335171244589ac82329af458227240c36e1a4abb6c12001c70ffefed457e6f7d.css" integrity="sha256-M1FxJEWJrIIymvRYInJAw24aSrtsEgAccP/v7UV&#43;b30=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/css/bundle.min.335171244589ac82329af458227240c36e1a4abb6c12001c70ffefed457e6f7d.css" integrity="sha256-M1FxJEWJrIIymvRYInJAw24aSrtsEgAccP/v7UV&#43;b30=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.7f897e939511eca8faed3d8cda00a2fc058e9d78bcca08318091da29944fae3e.js" integrity="sha256-f4l&#43;k5UR7Kj67T2M2gCi/AWOnXi8yggxgJHaKZRPrj4=" crossorigin="anonymous"></script></head>
   <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
@@ -56,7 +57,7 @@
   </form>
   <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=&url=%2fposts%2fmysql%25E4%25B8%25BB%25E4%25BB%258E%25E6%2590%25AD%25E5%25BB%25BA%25E4%25B8%258E%25E6%2595%25B0%25E6%258D%25AE%25E9%2587%258D%25E6%2596%25B0%25E5%2590%258C%25E6%25AD%25A5%25E6%2593%258D%25E4%25BD%259C%25E6%25AD%25A5%25E9%25AA%25A4%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=Mysql%e4%b8%bb%e4%bb%8e%e6%90%ad%e5%bb%ba%e4%b8%8e%e6%95%b0%e6%8d%ae%e9%87%8d%e6%96%b0%e5%90%8c%e6%ad%a5%e6%93%8d%e4%bd%9c%e6%ad%a5%e9%aa%a4&url=%2fposts%2fmysql%25E4%25B8%25BB%25E4%25BB%258E%25E6%2590%25AD%25E5%25BB%25BA%25E4%25B8%258E%25E6%2595%25B0%25E6%258D%25AE%25E9%2587%258D%25E6%2596%25B0%25E5%2590%258C%25E6%25AD%25A5%25E6%2593%258D%25E4%25BD%259C%25E6%25AD%25A5%25E9%25AA%25A4%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
@@ -111,7 +112,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active"></li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active">Mysql主从搭建与数据重新同步操作步骤</li></ol>
   </div>
 </nav><article class="post row card mb-4 component">
   <div class="card-body"><div class="post-panel-wrapper">
@@ -122,51 +123,18 @@
   
     
 
-    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
-  <i class="fas fa-fw fa-coffee"></i>
-</a>
     
-    <a data-bs-toggle="offcanvas" href="#offcanvasTOC" aria-controls="offcanvasTOC" role="button">
-  <i class="fas fa-fw fa-list-alt"></i>
-</a>
+    
+    
   </div>
 </div>
-<h1 class="card-title my-3">
+<h1 class="card-title my-3">Mysql主从搭建与数据重新同步操作步骤
 </h1><div class="post-meta"><span class="post-date" title="created on">
-    <i class="fas fa-fw fa-calendar-alt"></i>0001-01-01
+    <i class="fas fa-fw fa-calendar-alt"></i>2023-01-06
   </span><span class="post-reading-time" title="reading time">
     <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
-  </span></div>
-<div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
-  <div class="offcanvas-header">
-    <h2 class="offcanvas-title" id="offcanvasTOCLabel">目录</h5>
-      <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
-  </div>
-  <div class="offcanvas-body">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#笔记本上装了两个虚拟机">笔记本上装了两个虚拟机</a>
-      <ul>
-        <li><a href="#安装的步骤">安装的步骤</a></li>
-        <li><a href="#安装时出现的问题">安装时出现的问题</a></li>
-        <li><a href="#远程无法连接数据库的问题"><strong>远程无法连接数据库的问题：</strong></a></li>
-      </ul>
-    </li>
-  </ul>
-
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#show-master-status这一步很重要"><strong>show master status;这一步很重要</strong></a></li>
-        <li><a href="#从库重新同步数据的步骤"><strong>从库重新同步数据的步骤</strong></a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-</div><div class="post-content mb-3"><h1 id="搭建mysql主从">搭建MySQL主从</h1>
+  </span><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy">数据库</a><a href="/series/mysql/" class="post-taxonomy">mysql</a></div>
+<div class="post-content mb-3"><h1 id="搭建mysql主从">搭建MySQL主从</h1>
 <h2 id="笔记本上装了两个虚拟机">笔记本上装了两个虚拟机</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>    IP1:192.168.73.137    主库
 <span class="ln">2</span>    IP2:192.168.73.138    从库
@@ -375,30 +343,10 @@
 <li>最后不要忘记要把主库的锁打开</li>
 </ol>
 <p><code>unlock tables;</code></p>
-</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content surface">
-      <div class="modal-header">
-        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
-        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
-      </div>
-      <div class="modal-body">
-        <ul class="nav nav-tabs flex-nowrap mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
-            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
-              <i class="fab fa-fw fa-alipay"></i>支付宝
-            </a>
-          </li></ul>
-        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="/images/reward/alipay.png" loading="lazy" />
-          </div></div>
-      </div>
-    </div>
-  </div>
 </div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
-  <div class="post-nav post-prev"><div class="post-nav post-next">
-    <a href="/posts/docker%E5%AE%89%E8%A3%85redis%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/">Docker安装redis使用自定义配置，启动失败
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
 </a>
-    <i class="fas fa-fw fa-chevron-right"></i>
   </div></div><section class="related-posts-wrapper">
     <h3>相关文章</h3>
     <ul class="related-posts"><li><a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
@@ -408,16 +356,7 @@
 </a></li><li><a href="/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">RocketMQ集群搭建
 </a></li></ul>
   </section></div>
-</article><div class="post-comments card row component">
-  <div class="card-body"><script src="https://utteranc.es/client.js"
-  repo="old-ray/old-ray.github.io"
-  issue-term="pathname"
-  label="comment"
-  theme="github-light"
-  crossorigin="anonymous"
-  async>
-</script></div>
-</div></div>
+</article></div>
 </div><aside class="col-lg-4 sidebar d-flex">
   <div class="container">
     
@@ -448,11 +387,11 @@
   </section><section class="recent-posts row card component">
   <div class="card-body">
     <h2 class="card-title">最近文章</h2>
-    <ul><li><a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
+    <ul><li><a href="/posts/mysql%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/">Mysql主从搭建与数据重新同步操作步骤
+</a></li><li><a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
 </a></li><li><a href="/posts/git%E5%85%A5%E9%97%A8/">Git入门
 </a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">搭建自已的图床
 </a></li><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
-</a></li><li><a href="/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">RocketMQ集群搭建
 </a></li></ul>
   </div>
 </section><section class="taxonomies row card component">

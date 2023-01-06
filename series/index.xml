@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2020-{year} All Rights Reserved.</copyright>
-    <lastBuildDate>Wed, 30 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql</title>
+      <link>/series/mysql/</link>
+      <pubDate>Fri, 06 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>/series/mysql/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>安卓</title>
       <link>/series/%E5%AE%89%E5%8D%93/</link>
@@ -77,15 +86,6 @@
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>/series/spring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mysql</title>
-      <link>/series/mysql/</link>
-      <pubDate>Sat, 19 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/series/mysql/</guid>
       <description></description>
     </item>
     
