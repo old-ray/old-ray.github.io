@@ -1,0 +1,547 @@
+<!doctype html><html lang="zh-cn"
+   data-mode="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> - 个人学习展示</title><link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/images/favicons/manifest.json">
+<link rel="icon" href="/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="" /><meta itemprop="name" content="">
+<meta itemprop="description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上">
+
+<meta itemprop="wordCount" content="1225">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="" />
+<meta property="og:description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/mysql%E4%B8%BB%E4%BB%8E%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%87%8D%E6%96%B0%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4/" /><meta property="article:section" content="posts" />
+
+<meta property="og:site_name" content="个人学习展示" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="搭建MySQL主从 笔记本上装了两个虚拟机 1 IP1:192.168.73.137 主库 2 IP2:192.168.73.138 从库 3 账号：root 4 密码：888888 安装的步骤 1 2# 创建安装目录 3cd / 4mkdir server 5 6# 将安装包上"/>
+<link rel="preload" href="/css/bundle.min.335171244589ac82329af458227240c36e1a4abb6c12001c70ffefed457e6f7d.css" integrity="sha256-M1FxJEWJrIIymvRYInJAw24aSrtsEgAccP/v7UV&#43;b30=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/css/bundle.min.335171244589ac82329af458227240c36e1a4abb6c12001c70ffefed457e6f7d.css" integrity="sha256-M1FxJEWJrIIymvRYInJAw24aSrtsEgAccP/v7UV&#43;b30=" crossorigin="anonymous"></noscript><script src="/js/bundle.min.7f897e939511eca8faed3d8cda00a2fc058e9d78bcca08318091da29944fae3e.js" integrity="sha256-f4l&#43;k5UR7Kj67T2M2gCi/AWOnXi8yggxgJHaKZRPrj4=" crossorigin="anonymous"></script></head>
+  <body><script src="/js/bootstrap.min.b5d86dd3a5f60c90be38a252bb65fc1a2732f32e71dc12c051720f0c7aef3cde.js" integrity="sha256-tdht06X2DJC&#43;OKJSu2X8Gicy8y5x3BLAUXIPDHrvPN4=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-settings me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="offcanvas offcanvas-start surface" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+
+
+
+
+
+<section class="setting social-share">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-share-alt"></i> Share</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a class="btn btn-sm btn-outline-primary btn-social-share"><i class="fas fa-share"></i></a>
+    </div>
+  </form>
+  <div class="mt-2 social-share-buttons d-flex visually-hidden flex-nowrap">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=&url=%2fposts%2fmysql%25E4%25B8%25BB%25E4%25BB%258E%25E6%2590%25AD%25E5%25BB%25BA%25E4%25B8%258E%25E6%2595%25B0%25E6%258D%25AE%25E9%2587%258D%25E6%2596%25B0%25E5%2590%258C%25E6%25AD%25A5%25E6%2593%258D%25E4%25BD%259C%25E6%25AD%25A5%25E9%25AA%25A4%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%2fposts%2fmysql%25E4%25B8%25BB%25E4%25BB%258E%25E6%2590%25AD%25E5%25BB%25BA%25E4%25B8%258E%25E6%2595%25B0%25E6%258D%25AE%25E9%2587%258D%25E6%2596%25B0%25E5%2590%258C%25E6%25AD%25A5%25E6%2593%258D%25E4%25BD%259C%25E6%25AD%25A5%25E9%25AA%25A4%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</section>
+
+</div>
+</div>
+<a class="navbar-brand me-3" href="/"><img class="logo" alt="Logo" src="/images/logo.webp" loading="lazy"
+   width="300" height="300"
+   />
+个人学习展示
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="/">主页</a></li><li class="breadcrumb-item"><a href="/posts/">文章</a></li><li class="breadcrumb-item active"></li></ol>
+  </div>
+</nav><article class="post row card mb-4 component">
+  <div class="card-body"><div class="post-panel-wrapper">
+  <div class="post-panel d-flex flex-column">
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-arrows-alt"></i>
+</a>
+  
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    
+    <a data-bs-toggle="offcanvas" href="#offcanvasTOC" aria-controls="offcanvasTOC" role="button">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+  </div>
+</div>
+<h1 class="card-title my-3">
+</h1><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>0001-01-01
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>3 分钟阅读
+  </span></div>
+<div class="offcanvas offcanvas-end surface" tabindex="-1" id="offcanvasTOC" aria-labelledby="offcanvasTOCLabel">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title" id="offcanvasTOCLabel">目录</h5>
+      <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+  </div>
+  <div class="offcanvas-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#笔记本上装了两个虚拟机">笔记本上装了两个虚拟机</a>
+      <ul>
+        <li><a href="#安装的步骤">安装的步骤</a></li>
+        <li><a href="#安装时出现的问题">安装时出现的问题</a></li>
+        <li><a href="#远程无法连接数据库的问题"><strong>远程无法连接数据库的问题：</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#show-master-status这一步很重要"><strong>show master status;这一步很重要</strong></a></li>
+        <li><a href="#从库重新同步数据的步骤"><strong>从库重新同步数据的步骤</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div><div class="post-content mb-3"><h1 id="搭建mysql主从">搭建MySQL主从</h1>
+<h2 id="笔记本上装了两个虚拟机">笔记本上装了两个虚拟机</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>    IP1:192.168.73.137    主库
+<span class="ln">2</span>    IP2:192.168.73.138    从库
+<span class="ln">3</span>    账号：root
+<span class="ln">4</span>    密码：888888
+</code></pre></div><h3 id="安装的步骤">安装的步骤</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>
+<span class="ln"> 2</span><span class="c1">#  创建安装目录</span>
+<span class="ln"> 3</span><span class="nb">cd</span> /
+<span class="ln"> 4</span>mkdir server
+<span class="ln"> 5</span>
+<span class="ln"> 6</span><span class="c1"># 将安装包上传到server目录中，解压文件，修改文件夹名</span>
+<span class="ln"> 7</span><span class="nb">cd</span> server
+<span class="ln"> 8</span>tar -zxvf mysql-8.0.31-el7-x86_64.tar.gz
+<span class="ln"> 9</span>mv mysql-8.0.31-el7-x86_64 mysql
+<span class="ln">10</span>
+<span class="ln">11</span><span class="c1"># 进入mysql目录，创建data目录，用来存放mysql的数据</span>
+<span class="ln">12</span><span class="nb">cd</span> mysql
+<span class="ln">13</span>mkdir mysql-files
+<span class="ln">14</span>
+<span class="ln">15</span><span class="c1"># 创建mariadb目录和mariadb.log文件，我的需要手工先创建，否则启动的时候会提示目录和文件找不到</span>
+<span class="ln">16</span>mkdir mariadb
+<span class="ln">17</span><span class="nb">cd</span> mariadb
+<span class="ln">18</span>touch mariadb.log
+<span class="ln">19</span>
+<span class="ln">20</span><span class="c1"># 修改my.cnf配置，将路径配置到server目录下</span>
+<span class="ln">21</span>vim /etc/my.cnf
+<span class="ln">22</span>
+<span class="ln">23</span><span class="c1">###################################################################</span>
+<span class="ln">24</span><span class="o">[</span>mysqld<span class="o">]</span>
+<span class="ln">25</span><span class="nv">basedir</span><span class="o">=</span>/server/mysql
+<span class="ln">26</span><span class="nv">datadir</span><span class="o">=</span>/server/mysql/mysql-files
+<span class="ln">27</span><span class="nv">socket</span><span class="o">=</span>/server/mysql/mysql.sock
+<span class="ln">28</span>symbolic-links<span class="o">=</span><span class="m">0</span>
+<span class="ln">29</span>
+<span class="ln">30</span><span class="o">[</span>mysqld_safe<span class="o">]</span>
+<span class="ln">31</span>log-error<span class="o">=</span>/server/mysql/mariadb/mariadb.log
+<span class="ln">32</span>pid-file<span class="o">=</span>/server/mysql/mariadb/mariadb.pid
+<span class="ln">33</span>
+<span class="ln">34</span>!includedir /etc/my.cnf.d
+<span class="ln">35</span><span class="c1">###################################################################</span>
+<span class="ln">36</span>
+<span class="ln">37</span><span class="c1"># 创建linux用户</span>
+<span class="ln">38</span>groupadd mysql
+<span class="ln">39</span>useradd -r -g mysql -s /bin/false mysql
+<span class="ln">40</span>
+<span class="ln">41</span><span class="c1"># 给mysql用户赋目录权限</span>
+<span class="ln">42</span>chown -R mysql /server
+<span class="ln">43</span>
+<span class="ln">44</span><span class="c1"># 初始化，这一步会生成root的初始密码</span>
+<span class="ln">45</span>bin/mysqld --initialize --user<span class="o">=</span>mysql
+<span class="ln">46</span>bin/mysql_ssl_rsa_setup
+<span class="ln">47</span>
+<span class="ln">48</span><span class="c1"># 启动</span>
+<span class="ln">49</span>support-files/mysql.server start
+<span class="ln">50</span>
+<span class="ln">51</span><span class="c1"># 配置成系统命令</span>
+<span class="ln">52</span>cp support-files/mysql.server /etc/init.d/mysql.server
+<span class="ln">53</span><span class="c1"># 这样可以通过 service mysql.server start 启动mysql</span>
+<span class="ln">54</span>
+</code></pre></div><h3 id="安装时出现的问题">安装时出现的问题</h3>
+<p>The server quit without updating PID file (/server/mysql/mysql-files/localhost.localdomain.pid).</p>
+<p>权限：chown -R mysql /server</p>
+<p>mysqld_safe error: log-error set to &lsquo;/server/mysql/mysql-files/mariadb/mariadb.log&rsquo;, however file don&rsquo;t exists. Create writable for user &lsquo;mysql&rsquo;.</p>
+<p>创建对应的目录和文件解决</p>
+<h5 id="binmysql配置环境变量"><strong>bin/mysql配置环境变量：</strong></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>vim /etc/profile
+<span class="ln">2</span>export PATH=/server/mysql/bin:$PATH
+<span class="ln">3</span>source /etc/profile
+</code></pre></div><p>mysql -uroot -h 127.0.0.1 -p</p>
+<p>首次进入要修改root密码</p>
+<p><code>alter user 'root'@'localhost' identified by 'Root@123456';</code></p>
+<h3 id="远程无法连接数据库的问题"><strong>远程无法连接数据库的问题：</strong></h3>
+<p>1，更改 “mysql” 数据库里的 “user” 表里的 “host” 项，从”localhost”改称'%'。
+2，防火墙，要开放数据库的端口</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>use mysql;
+<span class="ln"> 2</span>select &#39;host&#39; from user where user=&#39;root&#39;;
+<span class="ln"> 3</span>update user set host = &#39;%&#39; where user =&#39;root&#39;;
+<span class="ln"> 4</span>flush privileges;
+<span class="ln"> 5</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span># 开放数据库端口
+<span class="ln"> 8</span>firewall-cmd --zone=public --add-port=3306/tcp --permanent 
+<span class="ln"> 9</span>
+<span class="ln">10</span># 刷新
+<span class="ln">11</span>firewall-cmd --reload 
+<span class="ln">12</span> 
+</code></pre></div><hr>
+<h1 id="上面的步骤是在两台服务器上各搭建了mysql现在开始关联"><strong>上面的步骤是在两台服务器上各搭建了mysql，现在开始关联</strong></h1>
+<ol>
+<li>进入主库服务器，修改my.cnf文件，增加配置，修改完成后重启service mysql.server restart</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>server-id<span class="o">=</span><span class="m">1</span>
+<span class="ln">2</span><span class="c1">#开启binlog</span>
+<span class="ln">3</span><span class="nv">log_bin</span><span class="o">=</span>master-bin
+<span class="ln">4</span>log_bin-index<span class="o">=</span>master-bin.index
+<span class="ln">5</span>skip-name-resolve
+</code></pre></div><ol start="2">
+<li>登录到主库mysql，创建同步使用到的帐户</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>mysql -u root -h 127.0.0.1 -p
+<span class="ln">2</span>
+<span class="ln">3</span>create user slavauser@<span class="s1">&#39;%&#39;</span> identified by <span class="s1">&#39;Root@123456&#39;</span><span class="p">;</span>
+<span class="ln">4</span>
+<span class="ln">5</span>grant replication slave on *.* to slavauser@<span class="s1">&#39;%&#39;</span><span class="p">;</span>
+<span class="ln">6</span>
+<span class="ln">7</span>flush privileges<span class="p">;</span>
+<span class="ln">8</span>
+</code></pre></div><h3 id="show-master-status这一步很重要"><strong>show master status;这一步很重要</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span>show master status<span class="p">;</span>
+</code></pre></div><p><img class="img-fluid" alt="" src="https://pics.leiwang.vip/202301051538719.png" loading="lazy"
+  
+   />
+
+</p>
+<ol start="3">
+<li>修改从库的my.cnf文件，修改完成后重启service mysql.server restart</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln">1</span><span class="c1">#主库和从库需要不一致</span>
+<span class="ln">2</span>server-id<span class="o">=</span><span class="m">10</span>
+<span class="ln">3</span><span class="c1">#打开MySQL中继日志</span>
+<span class="ln">4</span>relay-log-index<span class="o">=</span>slave-relay-bin.index
+<span class="ln">5</span>relay-log<span class="o">=</span>slave-relay-bin
+<span class="ln">6</span><span class="c1">#打开从服务二进制日志</span>
+<span class="ln">7</span>log-bin<span class="o">=</span>mysql-bin
+<span class="ln">8</span><span class="c1">#使得更新的数据写进二进制日志中</span>
+<span class="ln">9</span>log-slave-updates<span class="o">=</span><span class="m">1</span>
+</code></pre></div><ol start="4">
+<li>连接上从库，设置主节点同步状态</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>
+<span class="ln"> 2</span><span class="c1">#设置同步主节点：</span>
+<span class="ln"> 3</span>CHANGE MASTER TO
+<span class="ln"> 4</span><span class="nv">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;192.168.73.137&#39;</span>,
+<span class="ln"> 5</span><span class="nv">MASTER_PORT</span><span class="o">=</span>3306,
+<span class="ln"> 6</span><span class="nv">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;slavauser&#39;</span>,
+<span class="ln"> 7</span><span class="nv">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;Root@123456&#39;</span>,
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="c1"># MASTER_LOG_FILE 和 MASTER_LOG_POS 必须与主节点上查找到的是一致的。</span>
+<span class="ln">10</span><span class="nv">MASTER_LOG_FILE</span><span class="o">=</span><span class="s1">&#39;master-bin.000001&#39;</span>,
+<span class="ln">11</span><span class="nv">MASTER_LOG_POS</span><span class="o">=</span>859,
+<span class="ln">12</span>
+<span class="ln">13</span><span class="nv">GET_MASTER_PUBLIC_KEY</span><span class="o">=</span>1<span class="p">;</span>
+<span class="ln">14</span>
+<span class="ln">15</span><span class="c1">#开启slave</span>
+<span class="ln">16</span>start slave<span class="p">;</span>
+<span class="ln">17</span>
+<span class="ln">18</span><span class="c1">#查看主从同步状态</span>
+<span class="ln">19</span>show slave status<span class="p">;</span>
+<span class="ln">20</span>
+<span class="ln">21</span><span class="c1">#或者用 show slave status \G; 这样查看比较简洁</span>
+<span class="ln">22</span>
+</code></pre></div><ol start="5">
+<li>测试</li>
+</ol>
+<p>进入主库mysql，创建一个数据库，然后切换到从库，看有没有新创建的数据库同步过来</p>
+<p><code>create database oldray;</code></p>
+<hr>
+<h3 id="从库重新同步数据的步骤"><strong>从库重新同步数据的步骤</strong></h3>
+<ol>
+<li>登录主库，将主库设为只读</li>
+</ol>
+<p><code>FLUSH TABLES WITH READ LOCK;</code></p>
+<ol start="2">
+<li>
+<p>show master status; 查看当前log日志状态，后面会用到</p>
+</li>
+<li>
+<p>新开一个主库mysql窗口，执行dump命令</p>
+</li>
+</ol>
+<p><code>mysqldump -u root -h 127.0.0.1 -p --opt -R oldray &gt; oldray20230106001.sql</code></p>
+<ol start="4">
+<li>将生成的sql脚本传送到从库服务器</li>
+</ol>
+<p><code>scp oldray20230106001.sql root@192.168.73.138:/server</code></p>
+<ol start="5">
+<li>在从库中执行脚本，注意，如果有同步function操作，需要先登录mysql，将开关打开，再执行脚本，否则会报错</li>
+</ol>
+<p><img class="img-fluid" alt="" src="https://pics.leiwang.vip/202301061047287.png" loading="lazy"
+  
+   />
+
+</p>
+<p><code>SET GLOBAL log_bin_trust_function_creators=TRUE;</code></p>
+<p><code>mysql -uroot -h 127.0.0.1 -p oldray &lt; oldray20230106001.sql</code></p>
+<ol start="6">
+<li>上面的操作完成后，数据已经同步到从库中来了，现在需要从库的配置，进入从库的mysql界面</li>
+</ol>
+<p><code>stop slave;</code></p>
+<p><code>reset slave;</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="ln"> 1</span>CHANGE MASTER TO
+<span class="ln"> 2</span><span class="nv">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;192.168.73.137&#39;</span>,
+<span class="ln"> 3</span><span class="nv">MASTER_PORT</span><span class="o">=</span>3306,
+<span class="ln"> 4</span><span class="nv">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;slavauser&#39;</span>,
+<span class="ln"> 5</span><span class="nv">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;Root@123456&#39;</span>,
+<span class="ln"> 6</span><span class="c1"># 注意这里要改成2步骤中查询到的数据</span>
+<span class="ln"> 7</span><span class="nv">MASTER_LOG_FILE</span><span class="o">=</span><span class="s1">&#39;master-bin.000002&#39;</span>,
+<span class="ln"> 8</span><span class="nv">MASTER_LOG_POS</span><span class="o">=</span>197482250,
+<span class="ln"> 9</span><span class="nv">GET_MASTER_PUBLIC_KEY</span><span class="o">=</span>1<span class="p">;</span>
+<span class="ln">10</span>
+</code></pre></div><p><code>start slave;</code></p>
+<p>查看下状态：</p>
+<p><code>show slave status \G;</code></p>
+<ol start="7">
+<li>最后不要忘记要把主库的锁打开</li>
+</ol>
+<p><code>unlock tables;</code></p>
+</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs flex-nowrap mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="/images/reward/alipay.png" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><div class="post-nav post-next">
+    <a href="/posts/docker%E5%AE%89%E8%A3%85redis%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/">Docker安装redis使用自定义配置，启动失败
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>相关文章</h3>
+    <ul class="related-posts"><li><a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
+</a></li><li><a href="/posts/git%E5%85%A5%E9%97%A8/">Git入门
+</a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">搭建自已的图床
+</a></li><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
+</a></li><li><a href="/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">RocketMQ集群搭建
+</a></li></ul>
+  </section></div>
+</article><div class="post-comments card row component">
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="old-ray/old-ray.github.io"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Old Ray" src="/images/profile.webp" loading="lazy"
+   width="640" height="640"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">Old Ray</div><div class="profile-bio">Java开发攻城狮</div><div class="profile-company"><i class="fas fa-fw fa-building"></i>心和未来</div><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i>广东·深圳</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://www.leiwang.vip/about/%E5%85%B3%E4%BA%8E%E6%88%91/">关于我</a></div></div>
+  </div>
+</section>
+  <section class="featured-posts row card component">
+    <div class="card-body">
+      <h2 class="card-title">精选文章</h2>
+      <ul><li><a href="/posts/git%E5%85%A5%E9%97%A8/">Git入门
+</a></li><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
+</a></li><li><a href="/posts/docker%E5%AE%89%E8%A3%85jenkins%E9%83%A8%E7%BD%B2springboot%E9%A1%B9%E7%9B%AE/">Docker安装jenkins部署springboot项目
+</a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%B8%80hugo-%E6%A1%86%E6%9E%B6%E6%9E%84%E5%BB%BA%E7%BD%91%E7%AB%99/">搭建个人博客（一）：Hugo 框架构建网站
+</a></li><li><a href="/posts/jvm%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">JVM常见面试题
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%89/">Java大头：垃圾收集器（三）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%BA%8C/">Java大头：垃圾收集器（二）
+</a></li><li><a href="/posts/java%E5%A4%A7%E5%A4%B4%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80/">Java大头：垃圾收集器（一）
+</a></li><li><a href="/posts/%E9%87%8D%E8%AF%86hashmap%E4%B8%89/">重识HashMap（三）
+</a></li><li><a href="/posts/%E9%87%8D%E8%AF%86hashmap%E4%BA%8C/">重识HashMap（二）
+</a></li></ul>
+    </div>
+  </section><section class="recent-posts row card component">
+  <div class="card-body">
+    <h2 class="card-title">最近文章</h2>
+    <ul><li><a href="/posts/glide%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E5%AE%BD%E9%AB%98%E5%BA%A6/">Glide自适应屏幕宽高度
+</a></li><li><a href="/posts/git%E5%85%A5%E9%97%A8/">Git入门
+</a></li><li><a href="/posts/%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E5%BA%8A/">搭建自已的图床
+</a></li><li><a href="/posts/jupyterlab%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/">JupyterLab服务端使用详解
+</a></li><li><a href="/posts/rocketmq%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">RocketMQ集群搭建
+</a></li></ul>
+  </div>
+</section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/categories">分类</a>
+        </h2>
+        <div><a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="后端">
+            后端
+          </a><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="数据库">
+            数据库
+          </a><a href="/categories/%E5%8D%9A%E5%AE%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="博客">
+            博客
+          </a><a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="开发工具">
+            开发工具
+          </a><a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="移动端">
+            移动端
+          </a><a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="虚拟机">
+            虚拟机
+          </a><a href="/categories/%E8%B7%A8%E5%9F%9F/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="跨域">
+            跨域
+          </a><a href="/categories/%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="静态网站">
+            静态网站
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/series">专栏</a>
+        </h2>
+        <div><a href="/series/java/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Java">
+            Java
+          </a><a href="/series/mysql/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="mysql">
+            mysql
+          </a><a href="/series/springboot/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="springboot">
+            springboot
+          </a><a href="/series/docker/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="docker">
+            docker
+          </a><a href="/series/intellij-idea/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="IntelliJ IDEA">
+            IntelliJ IDEA
+          </a><a href="/series/mq/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="MQ">
+            MQ
+          </a><a href="/series/python/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Python">
+            Python
+          </a><a href="/series/spring/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="spring">
+            spring
+          </a><a href="/series/vmware/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="vmware">
+            vmware
+          </a><a href="/series/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="个人博客">
+            个人博客
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="/tags">标签</a>
+        </h2>
+        <div><a href="/tags/git/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Git">
+            Git
+          </a><a href="/tags/hugo/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="HUGO">
+            HUGO
+          </a><a href="/tags/jenkins/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Jenkins">
+            Jenkins
+          </a><a href="/tags/jupyter/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="Jupyter">
+            Jupyter
+          </a><a href="/tags/jvm/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="jvm">
+            jvm
+          </a><a href="/tags/log4j/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="log4j">
+            log4j
+          </a><a href="/tags/redis/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="redis">
+            redis
+          </a><a href="/tags/string/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="String">
+            String
+          </a><a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="中间件">
+            中间件
+          </a><a href="/tags/%E5%88%87%E9%9D%A2/" class="post-taxonomy rounded btn btn-sm btn-outline-primary me-2 mb-2" title="切面">
+            切面
+          </a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"></nav>
+<div class="copyright mb-2">
+  Copyright © 2020-2023 All Rights Reserved.
+</div>
+</footer>
+
+</body>
+</html>
